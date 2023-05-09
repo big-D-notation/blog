@@ -32,10 +32,11 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        email = request.form["email"]  # Added email field
         user = users_db.get_user(username)
         if user:
             return render_template("register.html", error="Username already exists")
-        users_db.create_user(username, password)
+        users_db.create_user(username, password, email)  # Updated create_user method
         session["username"] = username
         return redirect(url_for("home"))
     return render_template("register.html")

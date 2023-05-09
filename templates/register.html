@@ -8,13 +8,35 @@
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
-    <form method="POST" action="{{ url_for('register') }}">
+    <form method="POST" action="{{ url_for('register') }}" onsubmit="return validatePassword()">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required><br><br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br><br>
+        <label for="repeatPassword">Repeat Password:</label>
+        <input type="password" id="repeatPassword" name="repeatPassword" required><br>
+        <p id="passwordError" style="color: red;"></p>
+        <br>
+        <label for="email">Email:</label> <!-- Added email field -->
+        <input type="email" id="email" name="email" required><br><br>
         <input type="submit" value="Register">
     </form>
     <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+
+    <script>
+        function validatePassword() {
+            let password = document.getElementById("password").value;
+            let repeatPassword = document.getElementById("repeatPassword").value;
+            let errorElement = document.getElementById("passwordError");
+
+            if (password !== repeatPassword) {
+                errorElement.textContent = "Passwords do not match";
+                return false;
+            } else {
+                errorElement.textContent = "";
+                return true;
+            }
+        }
+    </script>
 </body>
 </html>
