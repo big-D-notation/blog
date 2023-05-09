@@ -2,26 +2,112 @@
 <html>
 <head>
     <title>Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            color: #F0EDCC;
+            background-color: #02343F;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 35px;
+            font-size: 36px;
+        }
+
+        .form {
+            display: flex;
+            justify-content: center;
+            justify-content: center;
+            height: 400px;
+        }
+
+        .form-inside {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            padding-left: 12%;
+        }
+
+        .form-inside > div {
+            flex-basis: 40%;
+        }
+
+        div {
+            margin-bottom: 35px;
+            font-size: 20px;
+        }
+
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: 200px;
+            height: 20px;
+            font-size: 20px;
+            padding: 5px;
+            outline: none;
+            border: none;
+            border-bottom: 1px solid #F0EDCC;;
+        }
+
+        input[type="submit"] {
+            font-size: 20px;
+            padding: 12px;
+            border: 2px solid #F0EDCC;
+            border-radius: 25px;
+            transition: .5s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #F0EDCC;
+            color: #02343F;
+        }
+
+        .submit {
+            padding-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    </style>
 </head>
 <body>
     <h2>Registration</h2>
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
-    <form method="POST" action="{{ url_for('register') }}" onsubmit="return validatePassword()">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        <label for="repeatPassword">Repeat Password:</label>
-        <input type="password" id="repeatPassword" name="repeatPassword" required><br>
-        <p id="passwordError" style="color: red;"></p>
-        <br>
-        <label for="email">Email:</label> <!-- Added email field -->
-        <input type="email" id="email" name="email" required><br><br>
-        <input type="submit" value="Register">
-    </form>
-    <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+    <div class="form">
+        <form method="POST" action="{{ url_for('register') }}" onsubmit="return validatePassword()">
+            <div class="form-inside">
+                <div>
+                    <label for="username">Username:</label><br>
+                    <input type="text" id="username" name="username" required><br><br>
+                </div>
+                <div>
+                    <label for="email">Email:</label><br>
+                    <input type="email" id="email" name="email" required><br><br>
+                </div>
+                <div>
+                    <label for="password">Password:</label><br>
+                    <input type="password" id="password" name="password" required><br><br>
+                </div>
+                <div>
+                    <label for="repeatPassword">Repeat Password:</label><br>
+                    <input type="password" id="repeatPassword" name="repeatPassword" required><br>
+                    <p id="passwordError" style="color: red;"></p>
+                <br>
+                </div>
+            </div>
+            
+            <div class="submit">
+                <input type="submit" value="Register"><br>
+            </div>
+        </form>
+    </div>
+    
+    <p style="text-align: center; padding-top: 30px;">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
 
     <script>
         function validatePassword() {

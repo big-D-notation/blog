@@ -2,20 +2,86 @@
 <html>
 <head>
     <title>Login</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            color: #F0EDCC;
+            background-color: #02343F;
+        }
+
+        h2 {
+            text-align: center;
+            margin: 35px;
+            font-size: 36px;
+        }
+
+        .form {
+            display: flex;
+            justify-content: center;
+            height: 400px;
+        }
+
+        form > div {
+            margin-bottom: 35px;
+            font-size: 22px;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 200px;
+            height: 20px;
+            font-size: 20px;
+            padding: 5px;
+            outline: none;
+            border: none;
+            border-bottom: 1px solid #F0EDCC;;
+        }
+
+        input[type="submit"] {
+            font-size: 20px;
+            padding: 12px;
+            border: 2px solid #F0EDCC;
+            border-radius: 25px;
+            transition: .5s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #F0EDCC;
+            color: #02343F;
+        }
+
+        .submit {
+            padding-top: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+    </style>
 </head>
 <body>
     <h2>Login</h2>
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
-    <form method="POST" action="{{ url_for('login') }}">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        <input type="submit" value="Login">
-    </form>
-    <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
-    <p>Forgot your password? <a href="{{ url_for('reset_password') }}">Reset Password</a></p>
-</body>
+    <div class="form">
+        <form method="POST" action="{{ url_for('login') }}">
+            <div>
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username" required><br><br>
+                <label for="password">Password:</label><br>
+                <input type="password" id="password" name="password" required><br><br>
+            </div>
+            <div class="submit">
+                <input type="submit" value="Login">
+            </div>
+        </form>
+    </div>
+    <div style="text-align: center;">
+        <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+        <p>Forgot your password? <a href="{{ url_for('reset_password') }}">Reset Password</a></p>
+    </div>
+    </body>
 </html>
