@@ -34,6 +34,7 @@
                 {% else %}
                     <p>No comments</p>
                 {% endif %}
+                <a href="{{ url_for('add_comment', post_id=post[0]) }}">Add comment</a>
             {% endfor %}
         </ul>
     {% else %}
