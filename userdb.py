@@ -71,7 +71,7 @@ class UserDB:
         self.cursor.execute(query, (username,))
         return self.cursor.fetchall()
 
-    def get_post_comments(self, post_id):
+    def get_post_comments_by_id(self, post_id):
         query = "SELECT * FROM comments WHERE post_id = ?"
         self.cursor.execute(query, (post_id,))
         return self.cursor.fetchall()

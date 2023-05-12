@@ -20,6 +20,20 @@
             {% for post in user_posts %}
                 <li>{{ post[2] }}</li>  <!-- Assuming the title is stored at index 2 in the posts tuple -->
                 <p>{{ post[3] }}</p>  <!-- Assuming the content is stored at index 3 in the posts tuple -->
+                
+                {% if user_comments %}
+                <ul>
+                    {% for comms in user_comments %}
+                        {% for comm in comms %}
+                            <li>{{ comm[2] }}</li>  <!-- Assuming the name is stored at index 2 in the posts tuple -->
+                            <p>{{ comm[3] }}</p>  <!-- Assuming the content is stored at index 3 in the posts tuple -->
+                        {% endfor %}
+                    {% endfor %}
+
+                </ul>
+                {% else %}
+                    <p>No comments</p>
+                {% endif %}
             {% endfor %}
         </ul>
     {% else %}
