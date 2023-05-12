@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile</title>
+</head>
+<body>
+    <header>
+        <div><a href="{{ url_for('profile') }}">Blog</a></div>
+        <div>{{ this_username }}</div>
+        <div><a href="{{ url_for('logout') }}">Logout</a></div>
+    </header>
+
+    {% if username %}
+        <div>{{ this_username }}</div>
+        <h3>Posts:</h3>
+        {% if user_posts %}
+            <ul>
+                {% for post in user_posts %}
+                    <li>{{ post[2] }}</li>  <!-- Assuming the title is stored at index 2 in the posts tuple -->
+                    <p>{{ post[3] }}</p>  <!-- Assuming the content is stored at index 3 in the posts tuple -->
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No posts available.</p>
+        {% endif %}
+    {% else %}
+            <h2>No such user</h2>
+    {% endif %}
+
+</body>
+</html>

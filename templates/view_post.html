@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Post</title>
+</head>
+<body>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <h2>Comments</h2>
+    <ul>
+        {% for comment in comments %}
+            <li>{{ comment.content }}</li>
+        {% endfor %}
+    </ul>
+    <h3>Add Comment</h3>
+    <form method="POST" action="{{ url_for('add_comment', post_id=post.id) }}">
+        <textarea id="comment" name="comment" rows="3" required></textarea><br><br>
+        <input type="submit" value="Add Comment">
+    </form>
+</body>
+</html>
