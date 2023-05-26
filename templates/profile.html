@@ -78,9 +78,9 @@
                 <li style="text-align: center; padding-bottom: 10px;"><b>{{ post[2] }}</b></li>  <!-- Assuming the title is stored at index 2 in the posts tuple -->
                 <p style="text-align: center; padding-bottom: 15px;"><i>{{ post[3] }}</i></p>  <!-- Assuming the content is stored at index 3 in the posts tuple -->
                 
-                {% if user_comments %}
+                {% if user_comments[post] %}
                 <div class="comments">
-                        {% for comms in user_comments %}
+                        {% for comms in user_comments[post] %}
                             {% for comm in comms %}
                             <div class="comment">
                                 <li><b>{{ comm[2] }}</b></li>  <!-- Assuming the name is stored at index 2 in the posts tuple -->

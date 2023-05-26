@@ -108,11 +108,12 @@ def profile():
         users_db = UserDB()
 
         user_posts = users_db.get_user_posts(username)
-        user_comments = []
+        user_comments = {}
 
         for user_post in user_posts:
             comments = users_db.get_post_comments_by_id(user_post[0])
-            user_comments.append(comments)
+            user_comments[user_post] = []
+            user_comments[user_post].append(comments)
         
         return render_template("profile.html", username=username, user_posts=user_posts, user_comments=user_comments)
     return redirect(url_for("login"))
@@ -125,11 +126,12 @@ def stranger_profile(username):
         users_db = UserDB()
 
         user_posts = users_db.get_user_posts(username)
-        user_comments = []
-        
+        user_comments = {}
+
         for user_post in user_posts:
             comments = users_db.get_post_comments_by_id(user_post[0])
-            user_comments.append(comments)
+            user_comments[user_post] = []
+            user_comments[user_post].append(comments)
 
         return render_template(
             "stranger_profile.html", 
