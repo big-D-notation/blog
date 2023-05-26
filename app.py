@@ -8,9 +8,8 @@ app.secret_key = "secret_key"
 
 @app.route("/")
 def home():
-    if "username" in session:
-        return render_template("index.html", username=session["username"])
-    return redirect(url_for("login"))
+    return redirect(url_for("profile"))
+
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -94,7 +93,9 @@ def add_comment(post_id):
             username = session["username"]
             comment = request.form["comment"]
             users_db.add_comment(post_id, username, comment)
-            return redirect(url_for("profile"))
+
+            current_profile = users_db.get_user_by_post_id(post_id)[0][0]
+            return redirect(url_for("stranger_profile", username=current_profile))
         # TODO: ПЕРЕНАПРАВЛЯТИ НА ПОТРІБНИЙ ПРОФІЛЬ
         return render_template("add_comment.html", post_id=post_id)
     return redirect(url_for("login"))

@@ -75,4 +75,10 @@ class UserDB:
         query = "SELECT * FROM comments WHERE post_id = ?"
         self.cursor.execute(query, (post_id,))
         return self.cursor.fetchall()
+
+    def get_user_by_post_id(self, post_id):
+        query = "SELECT username FROM posts WHERE id = ?"
+        self.cursor.execute(query, (post_id,))
+        return self.cursor.fetchall()
+        
         
