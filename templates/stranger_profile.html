@@ -2,45 +2,106 @@
 <html>
 <head>
     <title>Profile</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            color: #F0EDCC;
+            background-color: #02343F;
+            list-style: none;
+        }
+
+        header {
+            padding: 40px 80px;
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 80px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        h3 {
+            font-size: 24px;
+            padding-top: 25px;
+            padding-left: 50px;
+            padding-bottom: 25px;
+        }
+        
+        .post {
+            padding: 30px;
+            font-size: larger;
+        }
+
+        .comment {
+            padding: 15px;
+        }
+
+        .comments {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            width: 800px;
+        }
+
+        .posts {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+    </style>
 </head>
 <body>
     <header>
-        <div><a href="{{ url_for('profile') }}">Blog</a></div>
-        <div>{{ this_username }}</div>
-        <div><a href="{{ url_for('logout') }}">Logout</a></div>
+        <div style="font-size: 28px;"><a href="{{ url_for('profile') }}">Blog</a></div>
+        <div style="display: flex; padding-top: 10px">
+            <div style="padding-right: 30px; font-size: 20px;">{{ this_username }}</div>
+            <div style="font-size: 20px;"><a href="{{ url_for('logout') }}">Logout</a></div>
+        </div>
     </header>
 
     {% if username %}
-        <div>{{ username }}</div>
-        <h3>Posts:</h3>
-        {% if user_posts %}
-            <ul>
-                {% for post in user_posts %}
-                    <li>{{ post[2] }}</li>  <!-- Assuming the title is stored at index 2 in the posts tuple -->
-                    <p>{{ post[3] }}</p>  <!-- Assuming the content is stored at index 3 in the posts tuple -->
-                    
-                    {% if user_comments %}
-                    <ul>
+    <h3>Posts:</h3>
+    {% if user_posts %}
+        <div class="posts">
+            {% for post in user_posts %}
+            <div class="post">
+                <li style="text-align: center; padding-bottom: 10px;"><b>{{ post[2] }}</b></li>  <!-- Assuming the title is stored at index 2 in the posts tuple -->
+                <p style="text-align: center; padding-bottom: 15px;"><i>{{ post[3] }}</i></p>  <!-- Assuming the content is stored at index 3 in the posts tuple -->
+                
+                {% if user_comments %}
+                <div class="comments">
                         {% for comms in user_comments %}
                             {% for comm in comms %}
-                                <li>{{ comm[2] }}</li>  <!-- Assuming the name is stored at index 2 in the posts tuple -->
-                                <p>{{ comm[3] }}</p>  <!-- Assuming the content is stored at index 3 in the posts tuple -->
+                            <div class="comment">
+                                <li><b>{{ comm[2] }}</b></li>  <!-- Assuming the name is stored at index 2 in the posts tuple -->
+                                <p><i>{{ comm[3] }}</i></p>  <!-- Assuming the content is stored at index 3 in the posts tuple -->
+                            </div>
                             {% endfor %}
                         {% endfor %}
-
-                    </ul>
-                    {% else %}
-                        <p>No comments</p>
-                    {% endif %}
-                    <a href="{{ url_for('add_comment', post_id=post[0]) }}">Add comment</a>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No posts available.</p>
-        {% endif %}
+                </div>
+                {% else %}
+                    <p style="font-size: larger; text-align: center;">No comments</p>
+                {% endif %}
+                <div style="display: flex; justify-content: center; align-items: center;">
+                    <a style="text-align: center;" href="{{ url_for('add_comment', post_id=post[0]) }}">Add comment</a>
+                </div>
+                </div>
+            {% endfor %}
+        </div>
     {% else %}
-            <h2>No such user</h2>
+        <p>No posts available.</p>
+    {% endif %}
+    {% else %}
+        <p style="font-size: larger; text-align: center;">No such user</p>
     {% endif %}
 
+    
 </body>
 </html>

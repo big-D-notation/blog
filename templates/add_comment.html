@@ -2,12 +2,67 @@
 <html>
 <head>
     <title>Add Comment</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            color: #F0EDCC;
+            background-color: #02343F;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 35px;
+            font-size: 36px;
+        }
+
+        .form_container {
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        textarea {
+            border: 2px solid;
+            width: 400px;
+            height: 100px;
+            font-size: 18px;
+            padding: 15px;
+        }
+
+        input[type="submit"] {
+            font-size: 20px;
+            padding: 12px;
+            border: 2px solid #F0EDCC;
+            border-radius: 25px;
+            transition: .5s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #F0EDCC;
+            color: #02343F;
+        }
+    </style>
 </head>
 <body>
     <h1>Add Comment</h1>
-    <form method="POST" action="{{ url_for('add_comment', post_id=post_id) }}">
-        <textarea id="comment" name="comment" rows="3" required></textarea><br><br>
-        <input type="submit" value="Add Comment">
-    </form>
+    <div class="form_container">
+        <form method="POST" action="{{ url_for('add_comment', post_id=post_id) }}">
+            <div class="container">
+                <textarea id="comment" name="comment" rows="3" required></textarea><br><br>
+                <input type="submit" value="Add Comment">
+            </div>
+        </form>
+    </div>
+    
 </body>
 </html>
