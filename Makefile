@@ -7,6 +7,14 @@ setup:
 run:
     python3 app.py
 
+test:
+    python3 userdb_test.py
+
+testcov:
+    coverage erase
+    coverage run userdb.py
+    coverage report
+
 # Видалення залежностей
 clean:
     rm -rf venv
