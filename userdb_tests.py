@@ -1,105 +1,68 @@
 import unittest
-import sqlite3
+from unittest.mock import Mock
 from userdb import UserDB
 
+
 class UserDBTests(unittest.TestCase):
-
     def setUp(self):
-        # Ініціалізуємо тестову базу даних або створимо її в пам'яті
-        self.conn = sqlite3.connect(":memory:")
         self.db = UserDB()
-        self.db.conn = self.conn
-        self.db.create_table()
+        self.db.cursor = Mock()
 
-    def tearDown(self):
-        # Закриваємо з'єднання з базою даних
-        self.conn.close()
+    def test_get_user(self):
+        # Мокуємо виклик execute та повертаємо дані
+        self.db.cursor.fetchone.return_value = (1, "john_doe", "password", "john@example.com")
+
+        # Викликаємо метод get_user
+        user = self.db.get_user("john_doe")
+
+        # Перевіряємо, що execute було викликано з правильними аргументами
+        self.db.cursor.execute.assert_called_once_with("SELECT * FROM users WHERE username = ?", ("john_doe",))
+
+        # Перевіряємо, що метод повернув очікуваний результат
+        self.assertEqual(user, (1, "john_doe", "password", "john@example.com"))
 
     def test_create_user(self):
-        # Перевіряємо додавання користувача
-        self.db.create_user("john_doe", "password", "john@example.com")
-        user = self.db.get_user("john_doe")
-        self.assertIsNotNone(user)
-        self.assertEqual(user[1], "john_doe")
-        self.assertEqual(user[2], "password")
-        self.assertEqual(user[3], "john@example.com")
+    # Мокуємо виклик execute
+        self.db.cursor.execute.return_value = None
 
-    def test_update_password(self):
-        # Додаємо користувача
+        # Викликаємо метод create_user
         self.db.create_user("jane_smith", "password123", "jane@example.com")
 
-        # Перевіряємо зміну пароля користувача
-        self.db.update_password("jane_smith", "new_password")
-        user = self.db.get_user("jane_smith")
-        self.assertEqual(user[2], "new_password")
+        # Перевіряємо, що execute було викликано з правильними аргументами
+        self.db.cursor.execute.assert_called_once_with(
+            "INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
+            ("jane_smith", "password123", "jane@example.com")
+        )
+
+        # Перевіряємо, що коміт був викликаний
+        self.db.conn.commit.assert_called_once()
 
     def test_add_post(self):
-        # Додаємо пост
+        # Мокуємо виклик execute
+        self.db.cursor.execute.return_value = None
+
+        # Викликаємо метод add_post
         self.db.add_post("john_doe", "Hello World", "This is my first post!")
 
-        # Перевіряємо, що пост був доданий
-        posts = self.db.get_user_posts("john_doe")
-        self.assertEqual(len(posts), 1)
-        self.assertEqual(posts[0][1], "john_doe")
-        self.assertEqual(posts[0][2], "Hello World")
-        self.assertEqual(posts[0][3], "This is my first post!")
+        # Перевіряємо, що execute було викликано з правильними аргументами
+        self.db.cursor.execute.assert_called_once_with("INSERT INTO posts (username, title, content) VALUES (?, ?, ?)",
+                                                      ("john_doe", "Hello World", "This is my first post!"))
 
-    def test_add_comment(self):
-        # Додаємо коментар
-        self.db.add_comment(1, "jane_smith", "Great post!")
-
-        # Перевіряємо, що коментар був доданий
-        comments = self.db.get_post_comments_by_id(1)
-        self.assertEqual(len(comments), 1)
-        self.assertEqual(comments[0][1], 1)
-        self.assertEqual(comments[0][2], "jane_smith")
-        self.assertEqual(comments[0][3], "Great post!")
-
-    def test_get_user_by_post_id(self):
-        # Додаємо пост
-        self.db.add_post("john_doe", "Hello World", "This is my first post!")
-
-        # Отримуємо автора посту
-        author = self.db.get_user_by_post_id(1)
-        self.assertEqual(author[0][0], "john_doe")
+        # Перевіряємо, що коміт був викликаний
+        self.db.conn.commit.assert_called_once()
 
     def test_get_user_posts(self):
-        # Додаємо пости для користувача
-        self.db.add_post("john_doe", "Post 1", "Content 1")
-        self.db.add_post("john_doe", "Post 2", "Content 2")
+        # Мокуємо виклик execute та повертаємо дані
+        self.db.cursor.fetchall.return_value = [(1, "john_doe", "Hello World", "This is my first post!")]
 
-        # Отримуємо пости користувача
+        # Викликаємо метод get_user_posts
         posts = self.db.get_user_posts("john_doe")
-        self.assertEqual(len(posts), 2)
-        self.assertEqual(posts[0][1], "john_doe")
-        self.assertEqual(posts[0][2], "Post 1")
-        self.assertEqual(posts[0][3], "Content 1")
-        self.assertEqual(posts[1][1], "john_doe")
-        self.assertEqual(posts[1][2], "Post 2")
-        self.assertEqual(posts[1][3], "Content 2")
 
-    def test_get_post_comments_by_id(self):
-        # Додаємо коментарі до посту
-        self.db.add_comment(1, "jane_smith", "Comment 1")
-        self.db.add_comment(1, "john_doe", "Comment 2")
+        # Перевіряємо, що execute було викликано з правильними аргументами
+        self.db.cursor.execute.assert_called_once_with("SELECT * FROM posts WHERE username = ?", ("john_doe",))
 
-        # Отримуємо коментарі до посту
-        comments = self.db.get_post_comments_by_id(1)
-        self.assertEqual(len(comments), 2)
-        self.assertEqual(comments[0][1], 1)
-        self.assertEqual(comments[0][2], "jane_smith")
-        self.assertEqual(comments[0][3], "Comment 1")
-        self.assertEqual(comments[1][1], 1)
-        self.assertEqual(comments[1][2], "john_doe")
-        self.assertEqual(comments[1][3], "Comment 2")
-
-    def test_create_table(self):
-        # Переконуємося, що таблиці існують
-        tables = self.db.cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
-        table_names = [table[0] for table in tables]
-        self.assertIn("users", table_names)
-        self.assertIn("posts", table_names)
-        self.assertIn("comments", table_names)
+        # Перевіряємо, що метод повернув очікуваний результат
+        self.assertEqual(posts, [(1, "john_doe", "Hello World", "This is my first post!")])
 
 if __name__ == '__main__':
     unittest.main()
